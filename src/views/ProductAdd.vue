@@ -35,6 +35,9 @@ export default {
       const parameter = {
         method: 'GET',
         headers: {
+          'Accept': '*/',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
           'Content-Type': 'application/json'
         }
       }
@@ -150,8 +153,11 @@ export default {
       const parameter = {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        },
+            'Accept': '*/',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json'
+          },
         body: dataJson
       };
 
@@ -182,8 +188,11 @@ export default {
       const parameter = {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        },
+            'Accept': '*/',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json'
+          },
         body: dataJson
       };
 
@@ -216,8 +225,11 @@ export default {
       const parameter = {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        },
+            'Accept': '*/',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json'
+          },
         body: dataJson
       };
 
