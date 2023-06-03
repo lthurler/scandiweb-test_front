@@ -1,15 +1,15 @@
 <script>
 import HeaderVue from '../components/HeaderVue.vue'
 import FooterVue from '../components/FooterVue.vue'
-import { process } from '../env.js'
+// import { process } from '../env.js'
 
-const url = process.env.URL_API
+const url = "https://scandweb-test.000webhostapp.com/product/"
 
 export default {
   name: 'ProductList',
 
   data() {
-    return {      
+    return {
       product_id: [],
       products: [],
       card: true
@@ -20,127 +20,125 @@ export default {
 
   methods: {
 
-      handleChange(event) {
+    handleChange(event) {
 
-        const id = event.target.value
+      const id = event.target.value
 
-        if (event.target.checked) {
+      if (event.target.checked) {
 
-          this.product_id.push(id)
-          
-          console.log(this.product_id)
+        this.product_id.push(id)
 
-        } else {
+        console.log(this.product_id)
 
-          const index = this.product_id.indexOf(id)
+      } else {
 
-          if (index > -1) {
+        const index = this.product_id.indexOf(id)
 
-            this.product_id.splice(index, 1)
-          }       
+        if (index > -1) {
+
+          this.product_id.splice(index, 1)
         }
-      },
+      }
+    },
 
-      async listProduct() {
+    async listProduct() {
 
-          const parameter = {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/json'
-              }
-          };            
+      const parameter = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
 
-          try {
-              const req = await fetch(url + "list", parameter)              
-              const res = await req.text()                
-              const data = JSON.parse(res)
-              this.products = data.response.filter((product) => product.active == 1)
-              
-              console.log(this.products)                                 
+      try {
+        const req = await fetch(url + "list", parameter)
+        const res = await req.text()
+        const data = JSON.parse(res)
+        this.products = data.response.filter((product) => product.active == 1)
 
-          } catch (error) {
-            
-            console.log(error)
-          }
-      },
+        console.log(this.products)
+
+      } catch (error) {
+
+        console.log(error)
+      }
+    },
 
     async deleteProduct() {
 
-        console.log(this.product_id)
-        
-        if (this.product_id.length !== 0) {
-          const data = {
-              product_id: this.product_id
-          }
-                      
-          console.log(data)
+      console.log(this.product_id)
 
-          const dataJson = JSON.stringify(data)            
-
-          const parameter = {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: dataJson
-          }
-
-          try {
-            const req = await fetch(url + "delete", parameter)
-            const res = await req.json()
-            this.product_id = []
-            this.card = false
-            this.listProduct()
-            this.card = true
-
-            console.log(res)
-
-          } catch(error) {
-            console.log(error)
-          }
-
-        } else {
-
-          let msg = "no product to delete"
-          console.log(msg)
+      if (this.product_id.length !== 0) {
+        const data = {
+          product_id: this.product_id
         }
 
+        console.log(data)
+
+        const dataJson = JSON.stringify(data)
+
+        const parameter = {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: dataJson
+        }
+
+        try {
+          const req = await fetch(url + "delete", parameter)
+          const res = await req.json()
+          this.product_id = []
+          this.card = false
+          this.listProduct()
+          this.card = true
+
+          console.log(res)
+
+        } catch (error) {
+          console.log(error)
+        }
+
+      } else {
+
+        let msg = "no product to delete"
+        console.log(msg)
       }
-    },
+
+    }
+  },
 
   created() {
     this.listProduct()
   }
-  
+
 }
 </script>
 
 <template>
-
   <main>
-    <HeaderVue :view="'list'" @button-clicked="deleteProduct"/>    
+    <HeaderVue :view="'list'" @button-clicked="deleteProduct" />
     <div v-if="card == true" id="content">
-        <div v-for="product in products" :key="product.product_id" id="product_container">
+      <div v-for="product in products" :key="product.product_id" id="product_container">
 
-            <div id="product_list">
-                <input type="checkbox" class="delete-checkbox" name="product_id"
-                 :value="product.product_id" @change="handleChange">
+        <div id="product_list">
+          <input type="checkbox" class="delete-checkbox" name="product_id" :value="product.product_id"
+            @change="handleChange">
 
-                <div id="product_content">
-                    <p>{{ product.sku }}</p>
-                    <p>{{ product.name }}</p>
-                    <p>{{ product.price }} $</p>                    
-                    <p v-if="product.weight !== 0">Weight: {{ product.weight }} Kg</p>
-                    <p v-if="product.size !== 0">Size: {{ product.size }} MB</p>
-                    <p v-if="product.dimension !== '0x0x0'">Dimension: {{ product.dimension }}</p>
-                </div>
+          <div id="product_content">
+            <p>{{ product.sku }}</p>
+            <p>{{ product.name }}</p>
+            <p>{{ product.price }} $</p>
+            <p v-if="product.weight !== 0">Weight: {{ product.weight }} Kg</p>
+            <p v-if="product.size !== 0">Size: {{ product.size }} MB</p>
+            <p v-if="product.dimension !== '0x0x0'">Dimension: {{ product.dimension }}</p>
+          </div>
 
-            </div>
-        </div> 
+        </div>
+      </div>
     </div>
     <FooterVue />
   </main>
-  
 </template>
 
 <style lang="sass" scoped>
