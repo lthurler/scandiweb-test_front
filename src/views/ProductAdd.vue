@@ -7,7 +7,7 @@ import { reactive, computed } from 'vue'
 // import { process } from '../env.js'
 
 
-const url = "https://scandweb-test.000webhostapp.com/product/"
+const url = "https://scandweb-test.000webhostapp.com/scandiweb_test/product/"
 var skus = []
 
 
