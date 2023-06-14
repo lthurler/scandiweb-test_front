@@ -79,7 +79,7 @@ export default {
         const dataJson = JSON.stringify(data)
 
         const parameter = {
-          method: 'PATCH',
+          method: 'PUT',
           headers: {
             'Accept': '*/*',            
             'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ export default {
         }
 
         try {
-          const req = await fetch(url + "delete", parameter)
+          const req = await fetch(url + "update", parameter)
           const res = await req.json()
           this.product_id = []
           this.card = false
