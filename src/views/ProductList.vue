@@ -3,7 +3,7 @@ import HeaderVue from '../components/HeaderVue.vue'
 import FooterVue from '../components/FooterVue.vue'
 // import { process } from '../env.js'
 
-const url = "https://scandweb-test.000webhostapp.com/scandiweb_test/product/"
+const url = "https://scandweb-test.000webhostapp.com/product/"
 
 export default {
   name: 'ProductList',
@@ -46,9 +46,7 @@ export default {
       const parameter = {
         method: 'GET',
         headers: {
-          'Accept': '*/',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': '*',
+          'Accept': '*/*',          
           'Content-Type': 'application/json'
         }
       };
@@ -83,9 +81,7 @@ export default {
         const parameter = {
           method: 'PATCH',
           headers: {
-            'Accept': '*/',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
+            'Accept': '*/*',            
             'Content-Type': 'application/json'
           },
           body: dataJson

@@ -7,7 +7,7 @@ import { reactive, computed } from 'vue'
 // import { process } from '../env.js'
 
 
-const url = "https://scandweb-test.000webhostapp.com/scandiweb_test/product/"
+const url = "https://scandweb-test.000webhostapp.com/product/"
 var skus = []
 
 
@@ -35,9 +35,7 @@ export default {
       const parameter = {
         method: 'GET',
         headers: {
-          'Accept': '*/',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': '*',
+          'Accept': '*/*',          
           'Content-Type': 'application/json'
         }
       }
@@ -153,9 +151,7 @@ export default {
       const parameter = {
         method: 'POST',
         headers: {
-            'Accept': '*/',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
+            'Accept': '*/*',            
             'Content-Type': 'application/json'
           },
         body: dataJson
@@ -188,9 +184,7 @@ export default {
       const parameter = {
         method: 'POST',
         headers: {
-            'Accept': '*/',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
+            'Accept': '*/*',            
             'Content-Type': 'application/json'
           },
         body: dataJson
@@ -225,9 +219,7 @@ export default {
       const parameter = {
         method: 'POST',
         headers: {
-            'Accept': '*/',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
+            'Accept': '*/*',            
             'Content-Type': 'application/json'
           },
         body: dataJson
