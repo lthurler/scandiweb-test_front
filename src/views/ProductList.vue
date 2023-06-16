@@ -46,7 +46,7 @@ export default {
       const parameter = {
         method: 'GET',
         headers: {
-          'Accept': '*/*',          
+          'Accept': '*/*',
           'Content-Type': 'application/json'
         }
       };
@@ -79,16 +79,16 @@ export default {
         const dataJson = JSON.stringify(data)
 
         const parameter = {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
-            'Accept': '*/*',            
+            'Accept': '*/*',
             'Content-Type': 'application/json'
           },
           body: dataJson
         }
 
         try {
-          const req = await fetch(url + "update", parameter)
+          const req = await fetch(url + "delete", parameter)
           const res = await req.json()
           this.product_id = []
           this.card = false
