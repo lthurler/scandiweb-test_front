@@ -79,7 +79,7 @@ export default {
         const dataJson = JSON.stringify(data)
 
         const parameter = {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
             'Accept': '*/*',
             'Content-Type': 'application/json'
