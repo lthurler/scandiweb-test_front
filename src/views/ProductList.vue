@@ -129,10 +129,11 @@ export default {
 
           <div id="product_content">
             <p>{{ product.sku }}</p>
+            <p>{{ product.product_type }}</p>
             <p>{{ product.name }}</p>
             <p>{{ product.price }} $</p>
-            <p v-if="product.weight !== 0">Weight: {{ product.weight }} Kg</p>
-            <p v-if="product.size !== 0">Size: {{ product.size }} MB</p>
+            <p v-if="product.weight !== '0'">Weight: {{ product.weight }} Kg</p>
+            <p v-if="product.size !== '0'">Size: {{ product.size }} MB</p>
             <p v-if="product.dimension !== '0x0x0'">Dimension: {{ product.dimension }}</p>
           </div>
 
