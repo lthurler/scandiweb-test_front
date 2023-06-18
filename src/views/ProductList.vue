@@ -128,8 +128,7 @@ export default {
             @change="handleChange">
 
           <div id="product_content">
-            <p>{{ product.sku }}</p>
-            <p>{{ product.product_type }}</p>
+            <p>{{ product.sku }}</p>            
             <p>{{ product.name }}</p>
             <p>{{ product.price }} $</p>
             <p v-if="product.weight !== '0'">Weight: {{ product.weight }} Kg</p>
