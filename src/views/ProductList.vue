@@ -3,7 +3,7 @@ import HeaderVue from '../components/HeaderVue.vue'
 import FooterVue from '../components/FooterVue.vue'
 // import { process } from '../env.js'
 
-const url = "https://sulake.info/product/"
+const url = "http://scandweb-test.infinityfreeapp.com/product/"
 
 export default {
   name: 'ProductList',
