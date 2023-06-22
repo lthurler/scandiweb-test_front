@@ -6,7 +6,7 @@ import { required, decimal, helpers, maxLength, integer } from '@vuelidate/valid
 import { reactive, computed } from 'vue'
 // import { process } from '../env.js'
 
-const url = "https://scandweb-test.infinityfreeapp.com/product/"
+const url = "https://thingproxy.freeboard.io/fetch/https://scandweb-test.infinityfreeapp.com/product/"
 // const url = "https://scandweb-test.000webhostapp.com/product/"
 var skus = []
 
