@@ -54,8 +54,7 @@ export default {
       }
     }
     listProduct()
-
-    // /[^a-zA-Z0-9\s]/g
+    
     const isUnique = (value) => !value || !skus.includes(value)
     const alphaSpace = helpers.regex(/^[a-zA-Z0-9\s]/g)
     const alphaUpperNum = helpers.regex(/^[0-9A-Z]*$/)
@@ -109,7 +108,6 @@ export default {
     })
 
     const v$ = useVuelidate(rules, state)
-
 
     return {
       v$,
