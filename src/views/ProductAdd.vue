@@ -8,7 +8,7 @@ import { reactive, computed } from 'vue'
 
 // const url = "http://scandiweb-test.xp3.biz/product/"
   
-const url = "https://scandweb-test.000webhostapp.com/product/"
+const url = "https://scandiweb-test.leothurler.com/product/"
 var skus = []
 
 
@@ -55,9 +55,9 @@ export default {
     }
     listProduct()
 
-
+    // /[^a-zA-Z0-9\s]/g
     const isUnique = (value) => !value || !skus.includes(value)
-    const alphaSpace = helpers.regex(/^[a-zA-Z\s]*$/)
+    const alphaSpace = helpers.regex(/[^a-zA-Z0-9\s]/g)
     const alphaUpperNum = helpers.regex(/^[0-9A-Z]*$/)
 
     const rules = computed(() => {
