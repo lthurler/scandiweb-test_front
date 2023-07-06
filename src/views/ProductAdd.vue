@@ -57,7 +57,7 @@ export default {
     
     const isUnique = (value) => !value || !skus.includes(value)
     const alphaSpace = helpers.regex(/^[a-zA-Z0-9\s]/g)
-    const alphaUpperNum = helpers.regex(/^[0-9A-Z]*$/)
+    const alphaUpperNum = helpers.regex(/^[0-9a-zA-Z]/g)
 
     const rules = computed(() => {
 
