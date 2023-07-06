@@ -57,7 +57,7 @@ export default {
     
     const isUnique = (value) => !value || !skus.includes(value)
     const alphaSpace = helpers.regex(/^[a-zA-Z0-9\s]/g)
-    const alphaUpperNum = helpers.regex(/^[0-9a-zA-Z]/g)
+    const alphaNum = helpers.regex(/^[0-9a-zA-Z]/g)
 
     const rules = computed(() => {
 
@@ -66,7 +66,7 @@ export default {
           required: helpers.withMessage('Please, submit required sku', required),
           isUnique: helpers.withMessage('This Sku is already in use, please supply another value', isUnique),
           maxLength: helpers.withMessage('Maximum sku length is 11', maxLength(11)),
-          alphaUpperNum: helpers.withMessage('Please, provide upper case letters, and numbers only', alphaUpperNum)
+          alphaNum: helpers.withMessage('Please, provide alphanumeric only', alphaNum)
         },
         name: {
           required: helpers.withMessage('Please, submit required name', required),
