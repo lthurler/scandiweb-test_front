@@ -6,9 +6,9 @@ import { required, decimal, helpers, maxLength, integer } from '@vuelidate/valid
 import { reactive, computed } from 'vue'
 // import { process } from '../env.js'
 
-const url = "http://localhost/scandweb-back/product/"
+// const url = "http://localhost/scandweb-back/product/"
   
-// const url = "https://scandiweb-test.leothurler.com/product/"
+const url = "https://scandiweb-test.leothurler.com/product/"
 var skus = []
 
 
