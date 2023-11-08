@@ -3,7 +3,7 @@ import HeaderVue from '../components/HeaderVue.vue'
 import FooterVue from '../components/FooterVue.vue'
 // import { process } from '../env.js'
 
-// const url = "http://scandiweb-test.xp3.biz/product/"
+// const url = "http://localhost/scandweb-back/product/"
 const url = "https://scandiweb-test.leothurler.com/product/"
 
 export default {
@@ -27,9 +27,7 @@ export default {
 
       if (event.target.checked) {
 
-        this.product_id.push(id)
-
-        console.log(this.product_id)
+        this.product_id.push(id)        
 
       } else {
 
@@ -52,30 +50,33 @@ export default {
         }
       };
 
-      try {
-        const req = await fetch(url + "list", parameter)
-        const res = await req.text()
-        const data = JSON.parse(res)
-        this.products = data.response.filter((product) => product.active == 1)
+      await fetch(url + "get", parameter)
+        .then(response => {
+            if (!response.ok) {
+              throw new Error('Network error');
+            }
+            return response.json();
+          })
 
-        console.log(this.products)
+        .then(data => {  
+            if(data.type === 'success') {
+              this.products = data.response.filter((product) => product.active === 1)
 
-      } catch (error) {
-
-        console.log(error)
-      }
+            } else {
+              console.error(data)              
+            }
+          })
+        .catch(error =>{
+            console.error(error)
+        })     
     },
 
     async deleteProduct() {
 
-      console.log(this.product_id)
-
       if (this.product_id.length !== 0) {
         const data = {
           product_id: this.product_id
-        }
-
-        console.log(data)
+        }        
 
         const dataJson = JSON.stringify(data)
 
@@ -88,19 +89,27 @@ export default {
           body: dataJson
         }
 
-        try {
-          const req = await fetch(url + "delete", parameter)
-          const res = await req.json()
+        await fetch(url + "delete", parameter)
+          .then(response => {
+              if (!response.ok) {
+                throw new Error('Network error');
+              }
+              return response.json();
+          })
+
+          .then(data =>{
+            if(data.type === 'error') {
+              console.error(data)
+            }
+          })
+          .catch(error=> {
+          console.log(error)
+        })
+
           this.product_id = []
           this.card = false
           this.listProduct()
-          this.card = true
-
-          console.log(res)
-
-        } catch (error) {
-          console.log(error)
-        }
+          this.card = true         
 
       } else {
 

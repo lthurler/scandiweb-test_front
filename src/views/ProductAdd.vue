@@ -6,9 +6,9 @@ import { required, decimal, helpers, maxLength, integer } from '@vuelidate/valid
 import { reactive, computed } from 'vue'
 // import { process } from '../env.js'
 
-// const url = "http://scandiweb-test.xp3.biz/product/"
+const url = "http://localhost/scandweb-back/product/"
   
-const url = "https://scandiweb-test.leothurler.com/product/"
+// const url = "https://scandiweb-test.leothurler.com/product/"
 var skus = []
 
 
@@ -41,17 +41,29 @@ export default {
         }
       }
 
-      try {
-        const req = await fetch(url + "list", parameter)
-        const res = await req.text()
-        const data = JSON.parse(res)
-        data.response.map(product => {
-          skus.push(product.sku);
+      await fetch(url + "get", parameter)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network error');
+          }
+          return response.json();
         })
 
-      } catch (error) {
+        .then(data =>{
+          if(data.type === 'success') {
+            data.response.map(product => {
+              skus.push(product.sku)              
+            })
+  
+          } else {
+  
+            console.error(data)
+          } 
+        })
+
+      .catch (error => {
         console.log(error)
-      }
+      })
     }
     listProduct()
     
@@ -118,8 +130,7 @@ export default {
   methods: {
 
     updateType(event) {
-      this.state.product_type = event.target.value
-      console.log(this.state.product_type)
+      this.state.product_type = event.target.value      
     },
 
     async saveProduct() {
@@ -135,15 +146,7 @@ export default {
       }
     },
 
-    async dvdSave() {
-
-      const data = {
-        sku: this.state.sku,
-        name: this.state.name,
-        price: this.state.price,
-        product_type: this.state.product_type,
-        size: this.state.size
-      }
+    async handlePost(data){
 
       const dataJson = JSON.stringify(data)
 
@@ -156,16 +159,36 @@ export default {
         body: dataJson
       };
 
-      try {
-        const req = await fetch(url + "add", parameter)
-        const res = await req.json()
-        this.$router.push('/')
+      await fetch(url + "post", parameter)
+       .then(response => {
+        if (!response.ok) {
+          throw new Error('Network error');
+        }
+        return response.json();
+      })
 
-        console.log(res)
+       .then(data => {
+        console.log(data)
+       })
 
-      } catch (error) {
+       this.$router.push('/')        
+
+       .catch(error => {
         console.log(error)
+      })
+    },
+
+    async dvdSave() {
+
+      const data = {
+        sku: this.state.sku,
+        name: this.state.name,
+        price: this.state.price,
+        product_type: this.state.product_type,
+        size: this.state.size
       }
+
+      this.handlePost(data)
     },
 
     async bookSave() {
@@ -178,27 +201,7 @@ export default {
         weight: this.state.weight
       }
 
-      const dataJson = JSON.stringify(data)
-
-      const parameter = {
-        method: 'POST',
-        headers: {
-            'Accept': '*/*',            
-            'Content-Type': 'application/json'
-          },
-        body: dataJson
-      };
-
-      try {
-        const req = await fetch(url + "add", parameter)
-        const res = await req.json()
-        this.$router.push('/')
-
-        console.log(res)
-
-      } catch (error) {
-        console.log(error)
-      }
+      this.handlePost(data)
     },
 
     async furnitureSave() {
@@ -213,27 +216,7 @@ export default {
         length: this.state.length
       }
 
-      const dataJson = JSON.stringify(data)
-
-      const parameter = {
-        method: 'POST',
-        headers: {
-            'Accept': '*/*',            
-            'Content-Type': 'application/json'
-          },
-        body: dataJson
-      };
-
-      try {
-        const req = await fetch(url + "add", parameter)
-        const res = await req.json()
-        this.$router.push('/')
-
-        console.log(res)
-
-      } catch (error) {
-        console.log(error)
-      }
+      this.handlePost(data)
     }
   },
 }
