@@ -2,8 +2,8 @@
 import HeaderVue from '../components/HeaderVue.vue'
 import FooterVue from '../components/FooterVue.vue'
 
-const url = "http://localhost/scandiweb-back/product/"
-// const url = "https://scandiweb-test.leothurler.com/product/"
+// const url = "http://localhost/scandiweb-back/product/"
+const url = "https://scandiweb-test.leothurler.com/product/"
 
 export default {
   name: 'ProductList',

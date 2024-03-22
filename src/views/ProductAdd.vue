@@ -6,8 +6,8 @@ import { required, decimal, helpers, maxLength, integer } from '@vuelidate/valid
 import { reactive, computed } from 'vue'
 
 
-const url = "http://localhost/scandiweb-back/product/"  
-// const url = "https://scandiweb-test.leothurler.com/product/"
+// const url = "http://localhost/scandiweb-back/product/"  
+const url = "https://scandiweb-test.leothurler.com/product/"
 
 var skus = []
 
