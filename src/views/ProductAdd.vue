@@ -4,10 +4,11 @@ import FooterVue from '../components/FooterVue.vue'
 import useVuelidate from '@vuelidate/core'
 import { required, decimal, helpers, maxLength, integer } from '@vuelidate/validators/'
 import { reactive, computed } from 'vue'
-// import { process } from '../env.js'
 
-const url = "http://scandweb-test.000webhostapp.com/product/"
-// const url = "https://scandweb-test.000webhostapp.com/product/"
+
+const url = "http://localhost/scandiweb-back/product/"  
+// const url = "https://scandiweb-test.leothurler.com/product/"
+
 var skus = []
 
 
@@ -40,24 +41,36 @@ export default {
         }
       }
 
-      try {
-        const req = await fetch(url + "list", parameter)
-        const res = await req.text()
-        const data = JSON.parse(res)
-        data.response.map(product => {
-          skus.push(product.sku);
+      await fetch(url + "get", parameter)
+        .then(response => {
+
+          if (!response.ok) {
+            throw new Error('Network error');
+          }
+          return response.json();
         })
 
-      } catch (error) {
+        .then(data =>{
+
+          if(data.type === 'success') {
+             data.response.map(product => {
+             skus.push(product.sku)              
+            })
+  
+          } else {  
+            console.error(data)
+          } 
+        })
+
+      .catch (error => {
         console.log(error)
-      }
+      })
     }
     listProduct()
-
-
+    
     const isUnique = (value) => !value || !skus.includes(value)
-    const alphaSpace = helpers.regex(/^[a-zA-Z\s]*$/)
-    const alphaUpperNum = helpers.regex(/^[0-9A-Z]*$/)
+    const alphaSpace = helpers.regex(/^[a-zA-Z0-9\s]/g)
+    const alphaNum = helpers.regex(/^[0-9a-zA-Z]/g)
 
     const rules = computed(() => {
 
@@ -66,7 +79,7 @@ export default {
           required: helpers.withMessage('Please, submit required sku', required),
           isUnique: helpers.withMessage('This Sku is already in use, please supply another value', isUnique),
           maxLength: helpers.withMessage('Maximum sku length is 11', maxLength(11)),
-          alphaUpperNum: helpers.withMessage('Please, provide upper case letters, and numbers only', alphaUpperNum)
+          alphaNum: helpers.withMessage('Please, provide alphanumeric only', alphaNum)
         },
         name: {
           required: helpers.withMessage('Please, submit required name', required),
@@ -79,7 +92,7 @@ export default {
           maxLength: helpers.withMessage('Maximum price is 10', maxLength(10)),
         },
         product_type: { required: helpers.withMessage('Please, submit required product type', required) },
-        weight: state.product_type === 'book' && {
+          weight: state.product_type === 'book' && {
           required: helpers.withMessage('Please, submit required price', required),
           maxLength: helpers.withMessage('Maximum weight is 4', maxLength(4)),
           integer: helpers.withMessage('Please, provide integer only', integer)
@@ -109,7 +122,6 @@ export default {
 
     const v$ = useVuelidate(rules, state)
 
-
     return {
       v$,
       state
@@ -119,12 +131,10 @@ export default {
   methods: {
 
     updateType(event) {
-      this.state.product_type = event.target.value
-      console.log(this.state.product_type)
+      this.state.product_type = event.target.value      
     },
 
     async saveProduct() {
-
       this.v$.$reset()
 
       const isFormCorrect = await this.v$.$validate()
@@ -134,6 +144,39 @@ export default {
       if (isFormCorrect) {
         this[this.state.product_type + "Save"]()
       }
+    },
+
+    async handlePost(data){
+
+      const dataJson = JSON.stringify(data)
+
+      const parameter = {
+        method: 'POST',
+        headers: {
+            'Accept': '*/*',            
+            'Content-Type': 'application/json'
+          },
+        body: dataJson
+      };
+
+      await fetch(url + "post", parameter)
+       .then(response => {
+
+          if (!response.ok) {
+            throw new Error('Network error');
+        }
+        return response.json();
+      })
+
+       .then(data => {
+        console.log(data)
+       })
+
+       this.$router.push('/')        
+
+       .catch(error => {
+        console.log(error)
+      })
     },
 
     async dvdSave() {
@@ -146,27 +189,7 @@ export default {
         size: this.state.size
       }
 
-      const dataJson = JSON.stringify(data)
-
-      const parameter = {
-        method: 'POST',
-        headers: {
-            'Accept': '*/*',            
-            'Content-Type': 'application/json'
-          },
-        body: dataJson
-      };
-
-      try {
-        const req = await fetch(url + "add", parameter)
-        const res = await req.json()
-        this.$router.push('/')
-
-        console.log(res)
-
-      } catch (error) {
-        console.log(error)
-      }
+      this.handlePost(data)
     },
 
     async bookSave() {
@@ -179,27 +202,7 @@ export default {
         weight: this.state.weight
       }
 
-      const dataJson = JSON.stringify(data)
-
-      const parameter = {
-        method: 'POST',
-        headers: {
-            'Accept': '*/*',            
-            'Content-Type': 'application/json'
-          },
-        body: dataJson
-      };
-
-      try {
-        const req = await fetch(url + "add", parameter)
-        const res = await req.json()
-        this.$router.push('/')
-
-        console.log(res)
-
-      } catch (error) {
-        console.log(error)
-      }
+      this.handlePost(data)
     },
 
     async furnitureSave() {
@@ -214,27 +217,7 @@ export default {
         length: this.state.length
       }
 
-      const dataJson = JSON.stringify(data)
-
-      const parameter = {
-        method: 'POST',
-        headers: {
-            'Accept': '*/*',            
-            'Content-Type': 'application/json'
-          },
-        body: dataJson
-      };
-
-      try {
-        const req = await fetch(url + "add", parameter)
-        const res = await req.json()
-        this.$router.push('/')
-
-        console.log(res)
-
-      } catch (error) {
-        console.log(error)
-      }
+      this.handlePost(data)
     }
   },
 }
@@ -279,6 +262,7 @@ export default {
             <option value="furniture">Furniture</option>
             <option value="book">Book</option>
           </select>
+
           <div class="error_msg" v-if="v$.product_type.$error">
             <p>{{ v$.product_type.$errors[0].$message }}</p>
           </div>
@@ -288,6 +272,7 @@ export default {
           <div class="contact_form-switch">
             <label>Weight (KG)</label>
             <input type="number" name="furniture_weight" v-model="state.weight" class="contact_form-input" id="weight">
+
             <div class="error_msg" v-if="v$.weight.$error">
               <p>{{ v$.weight.$errors[0].$message }}</p>
             </div>
@@ -302,6 +287,7 @@ export default {
           <div class="contact_form-dvd">
             <label>Size (MB)</label>
             <input type="number" name="furniture_size" v-model="state.size" class="contact_form-input" id="size">
+
             <div class="error_msg" v-if="v$.size.$error">
               <p>{{ v$.size.$errors[0].$message }}</p>
             </div>
@@ -316,6 +302,7 @@ export default {
           <div class="contact_form-switch">
             <label>Height (CM)</label>
             <input type="number" name="furniture_height" v-model="state.height" class="contact_form-input" id="height">
+
             <div class="error_msg" v-if="v$.height.$error">
               <p>{{ v$.height.$errors[0].$message }}</p>
             </div>
@@ -324,6 +311,7 @@ export default {
           <div class="contact_form-switch">
             <label id="h4width">Width (CM)</label>
             <input type="number" name="furniture_width" v-model="state.width" class="contact_form-input" id="width">
+
             <div class="error_msg" v-if="v$.width.$error">
               <p>{{ v$.width.$errors[0].$message }}</p>
             </div>
@@ -332,6 +320,7 @@ export default {
           <div class="contact_form-switch">
             <label>length (CM)</label>
             <input type="number" name="furniture_length" v-model="state.length" class="contact_form-input" id="length">
+
             <div class="error_msg" v-if="v$.length.$error">
               <p>{{ v$.length.$errors[0].$message }}</p>
             </div>
@@ -343,7 +332,9 @@ export default {
         </div>
       </form>
     </div>
+
     <FooterVue />
+    
   </main>
 </template>
 

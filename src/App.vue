@@ -11,7 +11,6 @@ import { RouterView } from 'vue-router'
 <style lang="sass">
 @import './assets/sass/variables'
 
-
 *
     margin: 0
     padding: 0

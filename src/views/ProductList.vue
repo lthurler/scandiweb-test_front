@@ -1,9 +1,9 @@
 <script>
 import HeaderVue from '../components/HeaderVue.vue'
 import FooterVue from '../components/FooterVue.vue'
-// import { process } from '../env.js'
 
-const url = "https://scandweb-test.000webhostapp.com/product/"
+const url = "http://localhost/scandiweb-back/product/"
+// const url = "https://scandiweb-test.leothurler.com/product/"
 
 export default {
   name: 'ProductList',
@@ -25,17 +25,12 @@ export default {
       const id = event.target.value
 
       if (event.target.checked) {
-
-        this.product_id.push(id)
-
-        console.log(this.product_id)
+        this.product_id.push(id)        
 
       } else {
-
         const index = this.product_id.indexOf(id)
 
         if (index > -1) {
-
           this.product_id.splice(index, 1)
         }
       }
@@ -51,35 +46,40 @@ export default {
         }
       };
 
-      try {
-        const req = await fetch(url + "list", parameter)
-        const res = await req.text()
-        const data = JSON.parse(res)
-        this.products = data.response.filter((product) => product.active == 1)
+      await fetch(url + "get", parameter)
+        .then(response => {
 
-        console.log(this.products)
+            if (!response.ok) {
+              throw new Error('Network error');
+            }
+            return response.json();
+          })
 
-      } catch (error) {
+        .then(data => { 
 
-        console.log(error)
-      }
+            if(data.type === 'success') {
+              this.products = data.response
+
+            } else {
+              console.error(data)              
+            }
+          })
+        .catch(error =>{
+            console.error(error)
+        })     
     },
 
     async deleteProduct() {
 
-      console.log(this.product_id)
-
       if (this.product_id.length !== 0) {
         const data = {
           product_id: this.product_id
-        }
-
-        console.log(data)
+        }        
 
         const dataJson = JSON.stringify(data)
 
         const parameter = {
-          method: 'PATCH',
+          method: 'DELETE',
           headers: {
             'Accept': '*/*',
             'Content-Type': 'application/json'
@@ -87,19 +87,28 @@ export default {
           body: dataJson
         }
 
-        try {
-          const req = await fetch(url + "delete", parameter)
-          const res = await req.json()
+        await fetch(url + "delete", parameter)
+          .then(response => {
+
+              if (!response.ok) {
+                throw new Error('Network error');
+              }
+              return response.json();
+          })
+
+          .then(data =>{
+            if(data.type === 'error') {
+              console.error(data)
+            }
+          })
+          .catch(error=> {
+          console.log(error)
+        })
+
           this.product_id = []
           this.card = false
           this.listProduct()
-          this.card = true
-
-          console.log(res)
-
-        } catch (error) {
-          console.log(error)
-        }
+          this.card = true         
 
       } else {
 
@@ -131,15 +140,17 @@ export default {
             <p>{{ product.sku }}</p>            
             <p>{{ product.name }}</p>
             <p>{{ product.price }} $</p>
-            <p v-if="product.weight !== '0'">Weight: {{ product.weight }} Kg</p>
-            <p v-if="product.size !== '0'">Size: {{ product.size }} MB</p>
+            <p v-if="product.weight !== 0">Weight: {{ product.weight }} Kg</p>
+            <p v-if="product.size !== 0">Size: {{ product.size }} MB</p>
             <p v-if="product.dimension !== '0x0x0'">Dimension: {{ product.dimension }}</p>
           </div>
 
         </div>
       </div>
     </div>
+
     <FooterVue />
+    
   </main>
 </template>
 
