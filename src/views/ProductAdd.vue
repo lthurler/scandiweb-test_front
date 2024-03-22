@@ -4,11 +4,11 @@ import FooterVue from '../components/FooterVue.vue'
 import useVuelidate from '@vuelidate/core'
 import { required, decimal, helpers, maxLength, integer } from '@vuelidate/validators/'
 import { reactive, computed } from 'vue'
+// import { process } from '../env.js'
 
-
-const url = "http://localhost/scandiweb-back/product/"  
-// const url = "https://scandiweb-test.leothurler.com/product/"
-
+// const url = "http://localhost/scandweb-back/product/"
+  
+const url = "https://scandiweb-test.leothurler.com/product/"
 var skus = []
 
 
@@ -43,7 +43,6 @@ export default {
 
       await fetch(url + "get", parameter)
         .then(response => {
-
           if (!response.ok) {
             throw new Error('Network error');
           }
@@ -51,13 +50,13 @@ export default {
         })
 
         .then(data =>{
-
           if(data.type === 'success') {
-             data.response.map(product => {
-             skus.push(product.sku)              
+            data.response.map(product => {
+              skus.push(product.sku)              
             })
   
-          } else {  
+          } else {
+  
             console.error(data)
           } 
         })
@@ -92,7 +91,7 @@ export default {
           maxLength: helpers.withMessage('Maximum price is 10', maxLength(10)),
         },
         product_type: { required: helpers.withMessage('Please, submit required product type', required) },
-          weight: state.product_type === 'book' && {
+        weight: state.product_type === 'book' && {
           required: helpers.withMessage('Please, submit required price', required),
           maxLength: helpers.withMessage('Maximum weight is 4', maxLength(4)),
           integer: helpers.withMessage('Please, provide integer only', integer)
@@ -135,6 +134,7 @@ export default {
     },
 
     async saveProduct() {
+
       this.v$.$reset()
 
       const isFormCorrect = await this.v$.$validate()
@@ -161,9 +161,8 @@ export default {
 
       await fetch(url + "post", parameter)
        .then(response => {
-
-          if (!response.ok) {
-            throw new Error('Network error');
+        if (!response.ok) {
+          throw new Error('Network error');
         }
         return response.json();
       })
@@ -262,7 +261,6 @@ export default {
             <option value="furniture">Furniture</option>
             <option value="book">Book</option>
           </select>
-
           <div class="error_msg" v-if="v$.product_type.$error">
             <p>{{ v$.product_type.$errors[0].$message }}</p>
           </div>
@@ -272,7 +270,6 @@ export default {
           <div class="contact_form-switch">
             <label>Weight (KG)</label>
             <input type="number" name="furniture_weight" v-model="state.weight" class="contact_form-input" id="weight">
-
             <div class="error_msg" v-if="v$.weight.$error">
               <p>{{ v$.weight.$errors[0].$message }}</p>
             </div>
@@ -287,7 +284,6 @@ export default {
           <div class="contact_form-dvd">
             <label>Size (MB)</label>
             <input type="number" name="furniture_size" v-model="state.size" class="contact_form-input" id="size">
-
             <div class="error_msg" v-if="v$.size.$error">
               <p>{{ v$.size.$errors[0].$message }}</p>
             </div>
@@ -302,7 +298,6 @@ export default {
           <div class="contact_form-switch">
             <label>Height (CM)</label>
             <input type="number" name="furniture_height" v-model="state.height" class="contact_form-input" id="height">
-
             <div class="error_msg" v-if="v$.height.$error">
               <p>{{ v$.height.$errors[0].$message }}</p>
             </div>
@@ -311,7 +306,6 @@ export default {
           <div class="contact_form-switch">
             <label id="h4width">Width (CM)</label>
             <input type="number" name="furniture_width" v-model="state.width" class="contact_form-input" id="width">
-
             <div class="error_msg" v-if="v$.width.$error">
               <p>{{ v$.width.$errors[0].$message }}</p>
             </div>
@@ -320,7 +314,6 @@ export default {
           <div class="contact_form-switch">
             <label>length (CM)</label>
             <input type="number" name="furniture_length" v-model="state.length" class="contact_form-input" id="length">
-
             <div class="error_msg" v-if="v$.length.$error">
               <p>{{ v$.length.$errors[0].$message }}</p>
             </div>
@@ -332,9 +325,7 @@ export default {
         </div>
       </form>
     </div>
-
     <FooterVue />
-    
   </main>
 </template>
 
