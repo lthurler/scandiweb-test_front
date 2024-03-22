@@ -1,10 +1,9 @@
 <script>
 import HeaderVue from '../components/HeaderVue.vue'
 import FooterVue from '../components/FooterVue.vue'
-// import { process } from '../env.js'
 
-// const url = "http://localhost/scandweb-back/product/"
-const url = "https://scandiweb-test.leothurler.com/product/"
+const url = "http://localhost/scandiweb-back/product/"
+// const url = "https://scandiweb-test.leothurler.com/product/"
 
 export default {
   name: 'ProductList',
@@ -26,15 +25,12 @@ export default {
       const id = event.target.value
 
       if (event.target.checked) {
-
         this.product_id.push(id)        
 
       } else {
-
         const index = this.product_id.indexOf(id)
 
         if (index > -1) {
-
           this.product_id.splice(index, 1)
         }
       }
@@ -52,15 +48,17 @@ export default {
 
       await fetch(url + "get", parameter)
         .then(response => {
+
             if (!response.ok) {
               throw new Error('Network error');
             }
             return response.json();
           })
 
-        .then(data => {  
+        .then(data => { 
+
             if(data.type === 'success') {
-              this.products = data.response.filter((product) => product.active === 1)
+              this.products = data.response
 
             } else {
               console.error(data)              
@@ -81,7 +79,7 @@ export default {
         const dataJson = JSON.stringify(data)
 
         const parameter = {
-          method: 'PATCH',
+          method: 'DELETE',
           headers: {
             'Accept': '*/*',
             'Content-Type': 'application/json'
@@ -91,6 +89,7 @@ export default {
 
         await fetch(url + "delete", parameter)
           .then(response => {
+
               if (!response.ok) {
                 throw new Error('Network error');
               }
@@ -149,7 +148,9 @@ export default {
         </div>
       </div>
     </div>
+
     <FooterVue />
+    
   </main>
 </template>
 
